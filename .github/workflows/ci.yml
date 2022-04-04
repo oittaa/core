@@ -8,24 +8,24 @@ on:
     branches: [ master ]
 
 jobs:
-  testfreebsd:
-    runs-on: macos-10.15
+  unit-tests:
+    runs-on: ubuntu-20.04
+    strategy:
+      matrix:
+        php-versions: ['7.4']
     steps:
-    - uses: actions/checkout@v2
-    - name: Test in FreeBSD
-      id: test
-      uses: vmactions/freebsd-vm@v0.1.5
+    - uses: actions/checkout@v3
+    - name: Setup PHP
+      uses: shivammathur/setup-php@2.18.0
       with:
-        usesh: true
-        prepare: pkg install -y git
-        mem: 2048
-        run: |
-          pwd
-          whoami
-          cd /usr
-          git clone https://github.com/opnsense/tools
-          cd tools
-          make update
-          make dvd
-          make print-IMAGESDIR
-
+        php-version: ${{ matrix.php-versions }}
+        extensions: psr, phalcon
+        tools: phpunit
+    - name: Prepare system
+      run: |
+        cp src/etc/config.xml.sample /usr/local/etc/config.xml
+        mkdir -p /conf
+        mkdir -p /usr/local/opnsense
+        ln -s contrib /usr/local/opnsense/
+    - name: PHPUnit
+      run: cd src/opnsense/mvc/tests && phpunit -c PHPunit.xml
