@@ -26,8 +26,8 @@ jobs:
         sudo mkdir -p /conf
         sudo chown $USER /conf
         sudo mkdir -p /usr/local/etc/
-        sudo ln -s src/etc/config.xml.sample /usr/local/etc/config.xml
+        sudo cp src/etc/config.xml.sample /usr/local/etc/config.xml
         sudo mkdir -p /usr/local/opnsense
-        sudo ln -s contrib /usr/local/opnsense/
+        sudo cp -a contrib /usr/local/opnsense/
         cd src/opnsense/mvc/tests
         phpunit -c PHPunit.xml
