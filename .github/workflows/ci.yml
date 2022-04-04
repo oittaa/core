@@ -21,7 +21,7 @@ jobs:
         php-version: ${{ matrix.php-versions }}
         extensions: psr, phalcon
         tools: phpunit
-    - name: Prepare system
+    - name: PHPUnit
       run: |
         sudo mkdir -p /conf
         sudo chown $USER /conf
@@ -29,5 +29,5 @@ jobs:
         sudo ln -s src/etc/config.xml.sample /usr/local/etc/config.xml
         sudo mkdir -p /usr/local/opnsense
         sudo ln -s contrib /usr/local/opnsense/
-    - name: PHPUnit
-      run: cd src/opnsense/mvc/tests && phpunit -c PHPunit.xml
+        cd src/opnsense/mvc/tests
+        phpunit -c PHPunit.xml
