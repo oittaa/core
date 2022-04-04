@@ -22,6 +22,6 @@ jobs:
         tools: phpcs, exussum12/coverage-checker
     - name: PHP_CodeSniffer
       run: |
-        git diff origin/master... > diff.txt
+        git diff $(git merge-base origin/master HEAD) > diff.txt
         phpcs --standard=ruleset.xml --report=json src/etc/inc src/opnsense > phpcs.json || true
         diffFilter --phpcs diff.txt phpcs.json
